@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  new_gest_proj:
+    image: ghcr.io/AdamBourni/new_gest_proj/new_gest_proj-${deployment_environment}:${tag}
+    container_name: new_gest_proj-${deployment_environment}
+    restart: always
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "${external_port}:5173"
+    network_mode: bridge
