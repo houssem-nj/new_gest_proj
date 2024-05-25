@@ -41,9 +41,26 @@ body {
 }
 
 h1 {
+    font-family: 'Poppins', sans-serif;
     color: #2c3e50;
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 30px;
+    height: 2px;
+    background-color: #3498db;
+    border-radius: 1px;
 }
 
 /* Styles pour les formulaires, boutons, inputs, et textarea */
@@ -109,31 +126,30 @@ h1 {
 /* ################################################################## */
 /* ################################################################## */
 
-/* Reponse.css */
-.notification-bell {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 24px;
-    cursor: pointer;
-}
+  .notification-bell {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+  }
 
-.notification-div {
-    position: absolute;
-    top: 50px;
-    right: 20px;
-    width: 350px;
-    background-color: #f8f6f6;
-    box-shadow: 0 4px 8px rgba(251, 249, 249, 0.897);
-    overflow-y: auto;
-    max-height: 400px;
-    padding: 10px;
-    z-index: 1000;
-    border-radius: 20px;
-}
+  .notification-div {
+      position: absolute;
+      top: 43px;
+      right: 83px;
+      width: 350px;
+      background-color: #f8f6f6;
+      box-shadow: 0 4px 8px rgba(251, 249, 249, 0.897);
+      overflow-y: auto;
+      max-height: 400px;
+      padding: 10px;
+      z-index: 1000;
+      border-radius: 20px;
+  }
 
-.notification-item {
-    margin-bottom: 10px;
-    border-bottom: 1px solid #f9f2f2;
-    padding-bottom: 10px;
-}
+  .notification-item {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #f9f2f2;
+      padding-bottom: 10px;
+  }

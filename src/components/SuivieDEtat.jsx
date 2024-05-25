@@ -69,7 +69,7 @@ function SuivieDEtat() {
 
     return (
         <div className="suivie-d-etat">
-            <Typography.Title level={2}>Suivi d'État des Projets</Typography.Title>
+            <h1>Suivi d'État des Projets</h1>
             <Table
                 columns={columns}
                 dataSource={etatProjet}

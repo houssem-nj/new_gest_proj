@@ -1,33 +1,34 @@
 // /* eslint-disable no-unused-vars */
-
 // import React, { useState, forwardRef, useImperativeHandle } from 'react';
 // import PropTypes from 'prop-types'; // Importez PropTypes depuis la bibliothèque prop-types
 // import axios from 'axios';
 // import FormData from "form-data";
-// // import "./App.css";
+// import "./../App.css";
 
 // /* eslint-disable react/display-name */
-// const DockerizeForm = forwardRef(({ framework, projectUrl, gitlabUrl, containerPort, deploymentEnvironment }, ref) => {
+// const CreatepipelineForm = forwardRef(({ projectUrl , gitlabUrl, jenkinsUrl , jenkinsUsername , sonarUrl , branchName ,credentialsId }, ref) => {
 //     const [response, setResponse] = useState(null);
 //     const [loading, setLoading] = useState(false); // State pour gérer l'affichage de "En attente..."
-
-//     const handleDockerizeForm = async (event) => {
+  
+//     const handleCreatepipelineForm = async (event) => {
 //         const apiUrl = import.meta.env.VITE_APP_API_URL;
-
+    
 //         let data = new FormData();
-//         data.append('framework', framework);
 //         data.append('project_url', projectUrl);
 //         data.append('gitlab_url', gitlabUrl);
-//         data.append('container_port', containerPort);
-//         data.append('deployment_environment', deploymentEnvironment);
-
+//         data.append('sonar_url', sonarUrl);
+//         data.append('jenkins_url', jenkinsUrl);
+//         data.append('jenkins_username', jenkinsUsername);
+//         data.append('branchName', branchName);
+//         data.append('credentialsId', credentialsId);
+    
 //         let config = {
 //             method: 'post',
-//             url: `${apiUrl}dockerize`,
-//             headers: {
+//             url: `${apiUrl}create_pipelinee`,
+//             headers: { 
 //                 'Content-Type': 'multipart/form-data'
 //             },
-//             data: data
+//             data : data
 //         };
 
 //         try {
@@ -39,58 +40,62 @@
 //         } finally {
 //             setLoading(false); // Désactiver le chargement une fois l'exécution terminée
 //         }
+
 //     };
-
+  
 //     useImperativeHandle(ref, () => ({
-//         handleDockerizeForm
+//         handleCreatepipelineForm
 //     }));
-
 //     return (
-//         <header >
-//             <form onSubmit={handleDockerizeForm}>
+//         <header>
+//             <form onSubmit={handleCreatepipelineForm}>        
 //             </form>
-//             {loading && <h4>En attente... dockerize en cours</h4>}
+//             {loading && <h4>En attente... Build en cours</h4>}
 //             {response && <h4><pre>{response}</pre></h4>}
+
 //         </header>
 //     );
-
 // });
 
 // // Ajoutez la validation des props
-// DockerizeForm.propTypes = {
-//     framework: PropTypes.string.isRequired,
+// CreatepipelineForm.propTypes = {
 //     projectUrl: PropTypes.string.isRequired,
 //     gitlabUrl: PropTypes.string.isRequired,
-//     containerPort: PropTypes.string.isRequired,
-//     deploymentEnvironment: PropTypes.string.isRequired
+//     jenkinsUrl: PropTypes.string.isRequired,
+//     jenkinsUsername: PropTypes.string.isRequired,
+//     sonarUrl: PropTypes.string.isRequired,
+//     branchName: PropTypes.string.isRequired,
+//     credentialsId: PropTypes.string.isRequired
 // };
 
-// export default DockerizeForm;
+// export default CreatepipelineForm;
 
 
-import React, { useState, forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+
+import React, { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
 import axios from 'axios';
 import FormData from "form-data";
 import "./Apps.css";
 
-
-
-
-
-
-
-const DockerizeForm = React.forwardRef(({ projectUrl, framework, containerPort, deploymentEnvironment }, ref) => {
+const CreatePipelineForm = forwardRef(({ projectUrl, jenkinsUrl, jenkinsUsername, sonar_url, branchName, credentialsId }, ref) => {
     const [response, setResponse] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
-
+    // const [build_status, setBuildStatus] = useState(null); 
 
 
     useEffect(() => {
-        const eventSource = new EventSource('/dockerize');
+        const eventSource = new EventSource('/create_pipelinee');
         eventSource.onmessage = function (event) {
             const result = JSON.parse(event.data);
             console.log(result);
             setResponse(JSON.stringify(result));
+
+            //Check if the event data contains build_status and update the state accordingly
+            if (result.hasOwnProperty('build_status')) {
+                setBuildStatus(result.build_status);
+            } else {
+                setResponse(JSON.stringify(result));
+            }
         };
 
         return () => {
@@ -99,19 +104,23 @@ const DockerizeForm = React.forwardRef(({ projectUrl, framework, containerPort, 
     }, []);
 
     const handleSubmit = async (event) => {
-        //event.preventDefault();
+        event.preventDefault();
         setIsSubmitting(true);
+
+
         const apiUrl = import.meta.env.VITE_APP_API_URL;
 
         let data = new FormData();
         data.append('project_url', projectUrl);
-        data.append('framework', framework);
-        data.append('container_port', containerPort);
-        data.append('deployment_environment', deploymentEnvironment);
+        data.append('sonar_url', sonar_url);
+        data.append('jenkins_url', jenkinsUrl);
+        data.append('jenkins_username', jenkinsUsername);
+        data.append('branchName', branchName);
+        data.append('credentialsId', credentialsId);
 
         let config = {
             method: 'post',
-            url: `${apiUrl}dockerize`,
+            url: `${apiUrl}/create_pipelinee`,
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
@@ -123,11 +132,11 @@ const DockerizeForm = React.forwardRef(({ projectUrl, framework, containerPort, 
             setResponse(JSON.stringify(response.data));
             setIsSubmitting(false);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
-    React.useImperativeHandle(ref, () => ({
+    useImperativeHandle(ref, () => ({
         handleSubmit
     }));
 
@@ -138,7 +147,7 @@ const DockerizeForm = React.forwardRef(({ projectUrl, framework, containerPort, 
             </form>
 
             {isSubmitting ? (
-                <h4><pre>Dockerize in progress...</pre></h4>
+                <h4><pre>Build in progress...</pre></h4>
             ) : (
                 response && <h4><pre>{response}</pre></h4>
             )}
@@ -147,5 +156,8 @@ const DockerizeForm = React.forwardRef(({ projectUrl, framework, containerPort, 
     );
 });
 
+export default CreatePipelineForm;
 
-export default DockerizeForm;
+
+
+

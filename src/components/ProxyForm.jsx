@@ -7,23 +7,20 @@
 // // import "./App.css";
 
 // /* eslint-disable react/display-name */
-// const DockerizeForm = forwardRef(({ framework, projectUrl, gitlabUrl, containerPort, deploymentEnvironment }, ref) => {
-//     const [response, setResponse] = useState(null);
-//     const [loading, setLoading] = useState(false); // State pour gérer l'affichage de "En attente..."
 
-//     const handleDockerizeForm = async (event) => {
+// const ProxyForm = forwardRef(({ sitename }, ref) => {
+//     const [response, setResponse] = useState(null);
+
+//     const handleproxyForm = async (event) => {
 //         const apiUrl = import.meta.env.VITE_APP_API_URL;
 
 //         let data = new FormData();
-//         data.append('framework', framework);
-//         data.append('project_url', projectUrl);
-//         data.append('gitlab_url', gitlabUrl);
-//         data.append('container_port', containerPort);
-//         data.append('deployment_environment', deploymentEnvironment);
+//         data.append('site_name', sitename);
 
 //         let config = {
 //             method: 'post',
-//             url: `${apiUrl}dockerize`,
+//             maxBodyLength: Infinity,
+//             url: `${apiUrl}proxy`,
 //             headers: {
 //                 'Content-Type': 'multipart/form-data'
 //             },
@@ -31,41 +28,31 @@
 //         };
 
 //         try {
-//             setLoading(true); // Activer le chargement "En attente..."
 //             const response = await axios(config);
 //             setResponse(JSON.stringify(response.data));
 //         } catch (error) {
 //             console.log(error);
-//         } finally {
-//             setLoading(false); // Désactiver le chargement une fois l'exécution terminée
 //         }
 //     };
 
 //     useImperativeHandle(ref, () => ({
-//         handleDockerizeForm
+//         handleproxyForm
 //     }));
-
 //     return (
-//         <header >
-//             <form onSubmit={handleDockerizeForm}>
+//         <header>
+//             <form onSubmit={handleproxyForm}>
 //             </form>
-//             {loading && <h4>En attente... dockerize en cours</h4>}
-//             {response && <h4><pre>{response}</pre></h4>}
+//             <h4><pre>{response}</pre></h4>
 //         </header>
 //     );
-
 // });
 
 // // Ajoutez la validation des props
-// DockerizeForm.propTypes = {
-//     framework: PropTypes.string.isRequired,
-//     projectUrl: PropTypes.string.isRequired,
-//     gitlabUrl: PropTypes.string.isRequired,
-//     containerPort: PropTypes.string.isRequired,
-//     deploymentEnvironment: PropTypes.string.isRequired
+// ProxyForm.propTypes = {
+//     sitename: PropTypes.string.isRequired
 // };
 
-// export default DockerizeForm;
+// export default ProxyForm;
 
 
 import React, { useState, forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
@@ -74,19 +61,13 @@ import FormData from "form-data";
 import "./Apps.css";
 
 
-
-
-
-
-
-const DockerizeForm = React.forwardRef(({ projectUrl, framework, containerPort, deploymentEnvironment }, ref) => {
+const ProxyForm = forwardRef(({ site_name }, ref) => {
     const [response, setResponse] = useState(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
 
 
     useEffect(() => {
-        const eventSource = new EventSource('/dockerize');
+        const eventSource = new EventSource('/proxy');
         eventSource.onmessage = function (event) {
             const result = JSON.parse(event.data);
             console.log(result);
@@ -99,19 +80,16 @@ const DockerizeForm = React.forwardRef(({ projectUrl, framework, containerPort, 
     }, []);
 
     const handleSubmit = async (event) => {
-        //event.preventDefault();
-        setIsSubmitting(true);
+
         const apiUrl = import.meta.env.VITE_APP_API_URL;
 
         let data = new FormData();
-        data.append('project_url', projectUrl);
-        data.append('framework', framework);
-        data.append('container_port', containerPort);
-        data.append('deployment_environment', deploymentEnvironment);
+        data.append('site_name', site_name);
 
         let config = {
             method: 'post',
-            url: `${apiUrl}dockerize`,
+            maxBodyLength: Infinity,
+            url: `${apiUrl}proxy`,
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
@@ -121,31 +99,28 @@ const DockerizeForm = React.forwardRef(({ projectUrl, framework, containerPort, 
         try {
             const response = await axios(config);
             setResponse(JSON.stringify(response.data));
-            setIsSubmitting(false);
         } catch (error) {
             console.log(error);
         }
     };
 
-    React.useImperativeHandle(ref, () => ({
+    useImperativeHandle(ref, () => ({
         handleSubmit
     }));
 
     return (
         <header className='repo'>
             <form onSubmit={handleSubmit}>
-                {/* Form inputs and submit button here */}
+                {/* <label>
+            Site Name:
+            <input type="text" value={site_name} onChange={e => setSiteName(e.target.value)} />
+          </label> */}
+
             </form>
-
-            {isSubmitting ? (
-                <h4><pre>Dockerize in progress...</pre></h4>
-            ) : (
-                response && <h4><pre>{response}</pre></h4>
-            )}
-
+            <h4><pre>{response}</pre></h4>
         </header>
     );
 });
 
 
-export default DockerizeForm;
+export default ProxyForm;
