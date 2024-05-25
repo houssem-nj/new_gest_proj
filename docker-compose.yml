@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   new_gest_proj:
-    image: ghcr.io/AdamBourni/new_gest_proj/new_gest_proj-${deployment_environment}:${tag}
+    image: ghcr.io/adambourni/new_gest_proj/new_gest_proj-${deployment_environment}:${tag}
     container_name: new_gest_proj-${deployment_environment}
     restart: always
     build: 
