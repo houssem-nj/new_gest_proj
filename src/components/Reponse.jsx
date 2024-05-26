@@ -123,7 +123,7 @@
 //   });
 
 //   useEffect(() => {
-//     axios.get("http://localhost:5002/traiter")
+//     axios.get("http://:5002/traiter")
 //       .then((response) => {
 //         console.log("Réponse de /traiter:", response.data);
 //         setDetailsRefusees(response.data); // Met à jour l'état avec les données reçues
@@ -192,7 +192,7 @@ function Reponse() {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await axios.post("http://localhost:5002/gest_notif");
+        const response = await axios.post("http://109.205.176.62:7010/gest_notif");
         if (response.data && response.data.length > 0) {
           // Trier les notifications par date décroissante
           const sortedNotifData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -344,7 +344,7 @@ function Reponse() {
   });
 
   useEffect(() => {
-    axios.get("http://localhost:5002/traiter")
+    axios.get("http://109.205.176.62:7010/traiter")
       .then((response) => {
         console.log("Réponse de /traiter:", response.data);
         setDetailsRefusees(response.data); // Met à jour l'état avec les données reçues
