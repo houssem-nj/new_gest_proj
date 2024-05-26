@@ -7,6 +7,8 @@ import "./SuivieDEtat.css"; // Assurez-vous d'avoir un fichier CSS pour le style
 function SuivieDEtat() {
     const [etatProjet, setEtatProjet] = useState([]);
 
+    const anotherApiUrl = import.meta.env.VITE_APP_ANOTHER_API_URL;
+
     const getStatusStyle = (status) => {
         if (status === "demande initialisée") return "status-green";
         if (status === "en attente") return "status-yellow";
