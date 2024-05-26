@@ -18,7 +18,7 @@ function SuivieDEtat() {
     useEffect(() => {
         const fetchEtatProjet = async () => {
             try {
-                const response = await axios.get("http://localhost:5002/afficher_etat");
+                const response = await axios.get("http://109.205.176.62:7010/afficher_etat");
                 setEtatProjet(response.data); // Met à jour l'état avec les données reçues
             } catch (error) {
                 notification.error({
