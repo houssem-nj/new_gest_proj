@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import DetailsDrawer from "./DetailsDrawer";
 import { SearchOutlined, BellOutlined } from "@ant-design/icons";
 
-// axios.defaults.baseURL = 'http://109.205.176.62:7010';
+// axios.defaults.baseURL = `${anotherApiUrl}`;
 
 const Admin_system = () => {
   const [newObjects, setNewObjects] = useState([]);
@@ -27,6 +27,7 @@ const Admin_system = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [projectUrls, setProjectUrls] = useState([]); // État pour stocker les URLs des projets
 
+  const anotherApiUrl = import.meta.env.VITE_APP_ANOTHER_API_URL; // Ensure this is defined
 
   // Fonction pour envoyer les données à l'endpoint /etat_suivi
   const sendEtatSuiviData = async (record, actionType, refusalReason = "") => {
@@ -39,7 +40,7 @@ const Admin_system = () => {
     };
 
     try {
-      await axios.post(`${anotherApiUrl}`, etatSuiviData, {
+      await axios.post(`${anotherApiUrl}etat_suivi`, etatSuiviData, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -58,7 +59,7 @@ const Admin_system = () => {
       : `Une demande a été refusée pour le projet ${record.nom} (ID: ${record.project_id}, URL: ${record.url_project}, Tag: ${record.tag}).`;
 
     try {
-      await axios.post('http://109.205.176.62:7010/gest_notif', {
+      await axios.post(`${anotherApiUrl}gest_notif`, {
         date: formattedDateTime,
         message: message
       }, {
@@ -74,7 +75,7 @@ const Admin_system = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await axios.post("http://109.205.176.62:7010/gest_notif");
+        const response = await axios.post(`${anotherApiUrl}gest_notif`);
         if (response.data && response.data.length > 0) {
           // Trier les notifications par date décroissante
           const sortedNotifData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -166,7 +167,7 @@ const Admin_system = () => {
 
     setNewObjects(savedDemands);
     axios
-      .get("http://109.205.176.62:7010/check_collection")
+      .get(`${anotherApiUrl}check_collection`)
       .then((response) => {
         if (response.data && response.data.new_objects) {
           // Marquer les nouvelles demandes et ajouter un timestamp
@@ -192,7 +193,7 @@ const Admin_system = () => {
   useEffect(() => {
     const fetchProjectUrls = async () => {
       try {
-        const response = await axios.get("http://109.205.176.62:7010/get_project_urls");
+        const response = await axios.get(`${anotherApiUrl}get_project_urls`);
         setProjectUrls(response.data); // Mettre à jour projectUrls avec la réponse
       } catch (error) {
         console.error("Erreur lors de la récupération des URLs des projets:", error);
@@ -217,7 +218,7 @@ const Admin_system = () => {
 
   useEffect(() => {
     // Appel à l'endpoint get_users pour récupérer la liste des utilisateurs
-    axios.get('http://109.205.176.62:7010/get_users')
+    axios.get(`${anotherApiUrl}get_users`)
       .then((response) => {
         if (response.data) {
           setUsersList(response.data); // Mettre à jour usersList avec la réponse
@@ -247,7 +248,7 @@ const Admin_system = () => {
     await sendNotification(record, 'approved');
     await sendEtatSuiviData(record, 'approved');
     axios
-      .post("http://109.205.176.62:7010/stocker", {
+      .post(`${anotherApiUrl}stocker`, {
         _id: record._id,
         message: "Demande approuvée",
       })
@@ -269,7 +270,7 @@ const Admin_system = () => {
     await sendEtatSuiviData(record, 'refused', refusalReason);
     if (refusalReason !== "") {
       axios
-        .post("http://109.205.176.62:7010/stocker", {
+        .post(`${anotherApiUrl}stocker`, {
           _id: record._id,
           message: "Demande refusée: " + refusalReason,
         })
@@ -321,7 +322,7 @@ const Admin_system = () => {
 
   const handleAddProject = () => {
     axios
-      .post("http://109.205.176.62:7010/ajouter_projet", {
+      .post(`${anotherApiUrl}ajouter_projet`, {
         project_url: projectUrl,
         project_leader: projectLeader,
       })
@@ -337,7 +338,7 @@ const Admin_system = () => {
 
   const handleDeleteProject = () => {
     axios
-      .post("http://109.205.176.62:7010/supprimer_projet", {
+      .post(`${anotherApiUrl}supprimer_projet`, {
         project_url: projectUrl,
       })
       .then((response) => {
@@ -352,7 +353,7 @@ const Admin_system = () => {
 
   const handleModifyProject = () => {
     axios
-      .post("http://109.205.176.62:7010/modifier_projet", {
+      .post(`${anotherApiUrl}modifier_projet`, {
         project_url: projectUrl,
         project_leader: projectLeader,
       })
