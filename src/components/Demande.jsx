@@ -68,7 +68,7 @@
 
 //   useEffect(() => {
 //     axios
-//       .get("http://localhost:5002/get_project_urls")
+//       .get("http://:5002/get_project_urls")
 //       .then((response) => {
 //         setProjets(response.data);
 //       })
@@ -84,7 +84,7 @@
 //     if (projectUrl) {
 //       axios
 //         .post(
-//           "http://localhost:5002/get_project_info",
+//           "http://:5002/get_project_info",
 //           { project_url: projectUrl },
 //           {
 //             headers: {
@@ -133,7 +133,7 @@
 
 //     try {
 //       // Envoyez la demande de production
-//       const prodResponse = await axios.post("http://localhost:5002/demande_prod", {
+//       const prodResponse = await axios.post("http://:5002/demande_prod", {
 //         project_id: projectInfo.project_id,
 //         project_name: projectInfo.project_name,
 //         project_url: projectUrl,
@@ -147,14 +147,14 @@
 //       });
 
 //       // Envoyez la notification
-//       const notifResponse = await axios.post('http://localhost:5002/gest_notif', messageToSend, {
+//       const notifResponse = await axios.post('http://:5002/gest_notif', messageToSend, {
 //         headers: {
 //           'Content-Type': 'application/json'
 //         }
 //       });
 
 //       // Envoyez les données à l'endpoint etat_suivi
-//       const etatSuiviResponse = await axios.post('http://localhost:5002/etat_suivi', etatSuiviData, {
+//       const etatSuiviResponse = await axios.post('http://:5002/etat_suivi', etatSuiviData, {
 //         headers: {
 //           'Content-Type': 'application/json'
 //         }
@@ -338,7 +338,7 @@ function Demande() {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await axios.post("http://localhost:5002/gest_notif");
+        const response = await axios.post("http://109.205.176.62:7010/gest_notif");
         if (response.data && response.data.length > 0) {
           // Trier les notifications par date décroissante
           const sortedNotifData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -378,7 +378,7 @@ function Demande() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5002/get_project_urls")
+      .get("http://109.205.176.62:7010/get_project_urls")
       .then((response) => {
         setProjets(response.data);
       })
@@ -394,7 +394,7 @@ function Demande() {
     if (projectUrl) {
       axios
         .post(
-          "http://localhost:5002/get_project_info",
+          "http://109.205.176.62:7010/get_project_info",
           { project_url: projectUrl },
           {
             headers: {
@@ -446,7 +446,7 @@ function Demande() {
 
     try {
       // Envoyez la demande de production
-      const prodResponse = await axios.post("http://localhost:5002/demande_prod", {
+      const prodResponse = await axios.post("http://109.205.176.62:7010/demande_prod", {
         project_id: projectInfo.project_id,
         project_name: projectInfo.project_name,
         project_url: projectUrl,
@@ -473,14 +473,14 @@ function Demande() {
       }
 
       // Envoyez la notification
-      const notifResponse = await axios.post('http://localhost:5002/gest_notif', messageToSend, {
+      const notifResponse = await axios.post('http://109.205.176.62:7010/gest_notif', messageToSend, {
         headers: {
           'Content-Type': 'application/json'
         }
       });
 
       // Envoyez les données à l'endpoint etat_suivi
-      const etatSuiviResponse = await axios.post('http://localhost:5002/etat_suivi', etatSuiviData, {
+      const etatSuiviResponse = await axios.post('http://109.205.176.62:7010/etat_suivi', etatSuiviData, {
         headers: {
           'Content-Type': 'application/json'
         }
