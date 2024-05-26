@@ -379,7 +379,7 @@ function Moa_test() {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await axios.post("http://localhost:5002/gest_notif");
+                const response = await axios.post("http://109.205.176.62:7010/gest_notif");
                 if (response.data && response.data.length > 0) {
                     // Trier les notifications par date décroissante
                     const sortedNotifData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -439,13 +439,13 @@ function Moa_test() {
         };
 
         try {
-            const response = await axios.post('http://localhost:5002/gest_notif', messageToSend, {
+            const response = await axios.post('http://109.205.176.62:7010/gest_notif', messageToSend, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
             // Envoyer les données à l'endpoint etat_suivi
-            const responseEtatSuivi = await axios.post('http://localhost:5002/etat_suivi', etatSuiviData, {
+            const responseEtatSuivi = await axios.post('http://109.205.176.62:7010/etat_suivi', etatSuiviData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -454,7 +454,7 @@ function Moa_test() {
             console.log("Réponse de l'endpoint etat_suivi:", responseEtatSuivi.data);
 
             if (!isApproved && refusalReason !== "") {
-                await axios.post("http://localhost:5002/stocker", {
+                await axios.post("http://109.205.176.62:7010/stocker", {
                     _id: selectedRequestId,
                     message: "Demande refusée: " + refusalReason,
                 });
@@ -462,12 +462,12 @@ function Moa_test() {
 
             if (isApproved) {
                 // Envoyer la requête DELETE à l'endpoint retirer
-                await axios.delete(`http://localhost:5002/retirer/${selectedRequestId}`);
+                await axios.delete(`http:///retirer/${selectedRequestId}`);
                 setIsModalOpen(false); // Fermer le modal si approuvé
             } else {
                 setRefusalReason(""); // Réinitialiser le motif de refus
                 setIsRefusalInputVisible(false); // Cacher le champ de saisie du motif de refus
-                await axios.delete(`http://localhost:5002/retirer/${selectedRequestId}`);
+                await axios.delete(`http://109.205.176.62:7010/retirer/${selectedRequestId}`);
             }
         } catch (error) {
             console.error("Erreur lors de l'envoi des données:", error);
@@ -481,7 +481,7 @@ function Moa_test() {
     const showDetails = async (id) => {
         console.log("ID demandé:", id);
         try {
-            const response = await axios.get(`http://localhost:5002/get_details_MOA/${id}`);
+            const response = await axios.get(`http://109.205.176.62:7010/get_details_MOA/${id}`);
             setModalData(response.data);
             setSelectedRequestId(id); // Stocker l'ID de la demande sélectionnée
             setIsModalOpen(true); // Ouvrir le modal
@@ -611,7 +611,7 @@ function Moa_test() {
     });
 
     useEffect(() => {
-        axios.get("http://localhost:5002/check_MOA")
+        axios.get("http://109.205.176.62:7010/check_MOA")
             .then((response) => {
                 console.log("Les demandes approuvées:", response.data);
                 setDetailsApprouvees(response.data); // Met à jour l'état avec les données reçues
