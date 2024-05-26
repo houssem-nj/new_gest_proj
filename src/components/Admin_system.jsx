@@ -194,7 +194,7 @@ const Admin_system = () => {
       try {
         const response = await axios.get("http://109.205.176.62:7010/get_project_urls");
         setProjectUrls(response.data); // Mettre à jour projectUrls avec la réponse
-      } catch (error) 
+      } catch (error) {
         console.error("Erreur lors de la récupération des URLs des projets:", error);
       }
     };
