@@ -39,7 +39,7 @@ const Admin_system = () => {
     };
 
     try {
-      await axios.post('http://:5002/etat_suivi', etatSuiviData, {
+      await axios.post('http://109.205.176.62:7010/etat_suivi', etatSuiviData, {
         headers: {
           'Content-Type': 'application/json'
         }
