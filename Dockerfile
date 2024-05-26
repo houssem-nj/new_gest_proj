@@ -13,4 +13,4 @@ RUN npx vite build
 EXPOSE 5173
 
 
-CMD ["npm", "run-script", "dev" ,"--", "--host"]
+CMD ["npm", "run", "dev" , "--host"]
