@@ -39,7 +39,7 @@ const Admin_system = () => {
     };
 
     try {
-      await axios.post('http://109.205.176.62:7010/etat_suivi', etatSuiviData, {
+      await axios.post(`${anotherApiUrl}`, etatSuiviData, {
         headers: {
           'Content-Type': 'application/json'
         }
