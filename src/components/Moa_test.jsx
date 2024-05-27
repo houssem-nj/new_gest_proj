@@ -323,9 +323,7 @@ function Moa_test() {
                 open={isModalOpen}
                 onCancel={closeModal}
                 footer={[
-                    <Checkbox key="check" onChange={handleCheck} checked={isChecked}>
-                        Vérifié
-                    </Checkbox>,
+                    
                     <Button key="finish" onClick={() => handleFinish(true)} disabled={!isChecked}>
                         Terminé
                     </Button>,
