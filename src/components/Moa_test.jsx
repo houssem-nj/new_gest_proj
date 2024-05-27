@@ -109,12 +109,12 @@ function Moa_test() {
 
             if (isApproved) {
                 // Envoyer la requête DELETE à l'endpoint retirer
-                await axios.delete(`http://${anotherApiUrl}retirer/${selectedRequestId}`);
+                await axios.delete(`${anotherApiUrl}retirer/${selectedRequestId}`);
                 setIsModalOpen(false); // Fermer le modal si approuvé
             } else {
                 setRefusalReason(""); // Réinitialiser le motif de refus
                 setIsRefusalInputVisible(false); // Cacher le champ de saisie du motif de refus
-                await axios.delete(`http://${anotherApiUrl}retirer/${selectedRequestId}`);
+                await axios.delete(`${anotherApiUrl}retirer/${selectedRequestId}`);
             }
         } catch (error) {
             console.error("Erreur lors de l'envoi des données:", error);
@@ -128,7 +128,7 @@ function Moa_test() {
     const showDetails = async (id) => {
         console.log("ID demandé:", id);
         try {
-            const response = await axios.get(`http://${anotherApiUrl}get_details_MOA/${id}`);
+            const response = await axios.get(`${anotherApiUrl}get_details_MOA/${id}`);
             setModalData(response.data);
             setSelectedRequestId(id); // Stocker l'ID de la demande sélectionnée
             setIsModalOpen(true); // Ouvrir le modal
