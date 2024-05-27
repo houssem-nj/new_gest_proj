@@ -136,8 +136,8 @@ h1::after {
 
 .notification-div {
     position: absolute;
-    top: 50px;
-    right: 20px;
+    top: 36px;
+    right: 83px;
     width: 350px;
     background-color: #f8f6f6;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
